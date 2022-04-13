@@ -21,7 +21,6 @@ import (
 
 	"github.com/douyu/jupiter"
 	"github.com/douyu/jupiter/pkg/client/grpc"
-	"github.com/douyu/jupiter/pkg/client/grpc/balancer"
 	"github.com/douyu/jupiter/pkg/client/grpc/balancer/p2c"
 	"github.com/douyu/jupiter/pkg/client/grpc/resolver"
 	"github.com/douyu/jupiter/pkg/registry/etcdv3"
@@ -59,7 +58,8 @@ func (eng *Engine) initResolver() error {
 
 func (eng *Engine) consumer() error {
 	config := grpc.StdConfig("etcdserver")
-	config.BalancerName = balancer.NameSmoothWeightRoundRobin
+	// 若想使用非默认的round_robin方式，则需要显示调用
+	//config.BalancerName = balancer.NameSmoothWeightRoundRobin
 	config.BalancerName = p2c.Name
 
 	client := helloworld.NewGreeterClient(config.Build())
